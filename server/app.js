@@ -67,17 +67,12 @@ app.get('/artists', (req, res) => {
 });
 
 
-
-
-
-
-
 app.put('/artists/:artistId', function(req, res) {
   const { artistId } = req.params;
   const data = req.body;
   const update = editArtistByArtistId(artistId, data);
   const artist = getArtistByArtistId(artistId);
-  res.status(200).json(artist);
+  res.status(200).json(update);
 });
 
 
