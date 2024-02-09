@@ -35,12 +35,39 @@ app.get('/artists/latest/albums', (req, res) => {
 
 });
 
-app.get('/artists/latest', (req, res) => {
+app.get('/artists/:artistId/albums', (req, res) => {
   // Your data to be sent in the JSON response
-  //const latestArtist = getLatestArtist();
+  const { artistId } = req.params;
+  const albums = getAlbumsByArtistId(artistId);
   // Sending JSON response
+  res.json(albums);
+
+});
+
+app.get('/artists/latest', (req, res) => {
   res.json(getLatestArtist());
 
+});
+
+app.put('/artists/:artistId', function(req, res) {
+  const { artistId } = req.params;
+  const data = req.body;
+  const update = editArtistByArtistId(artistId, data);
+  res.json(update);
+});
+
+app.patch('/artists/:artistId', function(req, res) {
+  const { artistId } = req.params;
+  const data = req.body;
+  const update = editArtistByArtistId(artistId, data);
+  res.json(update);
+});
+
+app.delete('/artists/:artistId', function(req, res) {
+  const { artistId } = req.params;
+  deleteArtistByArtistId(artistId);
+  const message = {message: 'Successfully deleted'};
+  res.send(message);
 });
 
 app.get('/artists/:artistId', (req, res) => {
@@ -50,6 +77,13 @@ app.get('/artists/:artistId', (req, res) => {
   // Sending JSON response
   res.status(200).json(artist);
 
+});
+
+app.post('/artists/:artistId/albums', function(req, res) {
+  const { artistId } = req.params;
+  const name = req.body;
+  const newAlbum = addAlbumByArtistId(artistId, name);
+  res.status(201).json(newAlbum);
 });
 
 app.post('/artists', function(req, res) {
@@ -66,15 +100,33 @@ app.get('/artists', (req, res) => {
 
 });
 
-
-app.put('/artists/:artistId', function(req, res) {
-  const { artistId } = req.params;
-  const data = req.body;
-  const update = editArtistByArtistId(artistId, data);
-  const artist = getArtistByArtistId(artistId);
-  res.status(200).json(update);
+app.delete('/albums/:albumId', function(req, res) {
+  const { albumId } = req.params;
+  deleteAlbumByAlbumId(albumId);
+  const message = {message: 'Successfully deleted'};
+  res.send(message);
 });
 
+app.post('/albums/:albumId/songs', function(req, res) {
+  const { albumId } = req.params;
+  const data = req.body;
+  const newSong = addSongByAlbumId(albumId, data);
+  res.status(201).json(newSong);
+});
+
+app.put('/albums/:albumId', function(req, res) {
+  const { albumId } = req.params;
+  const data = req.body;
+  const updatedAlbum = editAlbumByAlbumId(albumId, data);
+  res.json(updatedAlbum);
+});
+
+app.patch('/albums/:albumId', function(req, res) {
+  const { albumId } = req.params;
+  const data = req.body;
+  const updatedAlbum = editAlbumByAlbumId(albumId, data);
+  res.json(updatedAlbum);
+});
 
 
 
